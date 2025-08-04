@@ -3,7 +3,8 @@ My Rust learning notes in Markdown
 
 
 ## 目录
-[1.Iterator trait常用函数学习](Iterator_trait常用函数学习.md)
+[1.迭代器Iterator](Iterator.md)  
+迭代器基本概念、常用方法介绍
 
 
 ## 参考文献
