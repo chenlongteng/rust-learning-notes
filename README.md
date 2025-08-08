@@ -18,4 +18,7 @@ TODO
 
 ## 参考文献
 [Rust标准库手册](https://doc.rust-lang.org/std/index.html)  
-[Rust圣经](https://course.rs/about-book.html)
+[Rust圣经](https://course.rs/about-book.html)  
+[Rust语言已有哪些成功的(被看好的)应用、实践?](https://www.zhihu.com/question/314665060/answer/1924056679114318252)  
+[学习Rust适合写什么练手项目?](https://www.zhihu.com/question/34665842/answer/3540226860)  
+[Rust 语言圆桌年话](https://www.zhihu.com/roundtable/rustyuyanyuanzhuoni)

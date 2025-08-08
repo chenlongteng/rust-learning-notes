@@ -99,6 +99,9 @@ trait DerefMut: Deref {
 }
 ```
 `隐式解引用`，由于deref会接受&self引用并返回&self::target引用，因此Rust会利用这一点自动将前一种类型的引用转换为后一种类型的引用。换句话说，如果只要插入一个deref调用就能解决类型不匹配问题，Rust就会插入它。实现DerefMut也可以为可变引用启用相应的转换。  
+
+// 加个例子
+
 必要情况下，Rust会连续应用多个隐式解引用。如str切片类型的split_at方法，可以直接应用于Rc\<String>，因为Rc\<T>实现Deref\<Target=T>所以&Rc\<String>解引用成了&String，后者又因为String实现了Deref\<Target=str>所以也可以解引用成&str，而&str具有split_at方法。  
 
 ## Default
@@ -137,7 +140,9 @@ trait AsMut<T: ?Sized> {
 }
 ```
 例如，Vec\<T>实现了AsRef<[T]>，String实现了AsRef\<str>和AsRef<[u8]>。说明Vec\<T>可以零成本转换成&[T]。实现了AsRef特征的函数参数能够接受多种类型，如T:AsRef[T]，说明参数可以数组切片&[T]，也可以是向量Vec\<T>。  
-还有对于任意类型T和U，只要满足T:AsRef\<U>，就必然满足&T:AsRef\<U>，所以字符串字面量&str才能转换成&Path，因为str实现了AsRef\<Path>。
+还有对于任意类型T和U，只要满足T:AsRef\<U>，就必然满足&T:AsRef\<U>，所以字符串字面量&str才能转换成&Path，因为str实现了AsRef\<Path>。  
+
+// 写个例子
 
 AsMut\<T>只有修改给定的T肯定不会违反此类型的不变性约束时，实现AsMut\<T>的类型才有意义。如Vec\<T> 实现 AsMut<[T]>，修改切片元素不会破坏 Vec 的结构（容量、长度等保持不变）。完全安全，因为切片是 Vec 数据的直接视图。
 ## Borrow与BorrowMut
@@ -148,8 +153,10 @@ AsMut\<T>只有修改给定的T肯定不会违反此类型的不变性约束时�
 
 Borrow旨在解决具有泛型哈希表和其他关联集合类型的特定情况。
 
+// 这里加解释
+
 ## From与Into
-`std::convert::From`和`std::convert::to`特征表示类型转换，这种转换会接受一种类型的值并返回另一种类型的值，也就是会获取其参数的`所有权`。
+`std::convert::From`和`std::convert::Into`特征表示类型转换，这种转换会接受一种类型的值并返回另一种类型的值，也就是会获取其参数的`所有权`。
 ```rust
 trait Into<T>: Sized {
     fn into(self) -> T;
@@ -160,7 +167,8 @@ trait From<T>: Sized {
 }
 ```
 标准库自动实现了从每种类型到自身的简单转换：每种类型T都实现了From\<T>和Into\<T>。看上去很怪。  
-Into\<T>作为参数不仅可以接受参数T，还能接受所有能够转换成T的参数也就是实现了Into\<T>特征。
+// 加一个解释  
+Into\<T>作为参数不仅可以接受参数T，还能接受所有能够转换成T的参数也就是实现了Into\<T>特征。  
 From的from方法充当泛型构造函数，用于从另一个值生成本类型的实例。给定适当的From实现，标准库会自动实现相应的Into特征。例如定义自己的类型时，遇到单参数构造函数，可以写成适当类型的From\<T>的实现，这样就会自动获得相应的Into实现。  
 因为会获取参数的所有权，所以此转换可以复用原始值的资源来构造出转换后的值。如String的Into\<Vec\<u8>>的实现只是获取String的堆缓冲区，并不进行任何更改的情况下将其重新用作所返回向量的元素缓冲区。此转换既不需要分配内存，也不需要复制文本，是一个通过移动进行高性能实现的例子。
 
@@ -188,7 +196,9 @@ trait ToOwned {
 }
 ```
 to_owned可以返回任何能让你从中借入&self的类型：Owned类型必须实现Borrow\<Self>。所以Vec\<T>转换成&[T]，只要T再实现了Clone，[T]就能实现ToOwned\<Owned=Vec\<T>>，这样就能将切片元素复制到向量中了。
-
+// 这一段话改成人话
 
 ## Borrow与ToOwned的实际运用：谦卑的Cow
 `std::borrow::Cow`类型用于写入时克隆。Cow\<B>要么借入对B的不可变引用，要么拥有可供借入此类引用的值。如果它是Owned，就会借入对拥有值的不可变引用，如果它是Borrowed，就会转让自己持有的引用。
+
+// 加一个cow的解释
