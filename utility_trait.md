@@ -190,7 +190,7 @@ trait ToOwned {
 ```
 to_owned可以返回任何能让你从中借入&self的类型：Owned类型必须实现Borrow\<Self>。所以Vec\<T>转换成&[T]，只要T再实现了Clone，[T]就能实现ToOwned\<Owned=Vec\<T>>，这样就能将切片元素复制到向量中了。
 
-## Borrow与ToOwned的实际运用：谦卑的Cow
+## Cow
 `std::borrow::Cow`类型用于写入时克隆。Cow\<B>要么借入对B的不可变引用，要么拥有可供借入此类引用的值。如果它是Owned，就会借入对拥有值的不可变引用，如果它是Borrowed，就会转让自己持有的引用。
 ```rust
 pub enum Cow<'a, B> 
