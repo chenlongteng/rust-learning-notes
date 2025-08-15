@@ -11,10 +11,12 @@ My Rust learning notes in Markdown
 匿名函数表达式，一个好用的工具  
 [4. 实用工具特征](utility_trait.md)    
 一些定义在标准库的常见特征  
-[5. 并发]  
+[5. 并发](concurrency.md)  
 TODO  
 [6. 异步编程]  
-TODO    
+TODO     
+[7.kvm源码学习](kvm.md)
+
 
 ## 参考文献
 [Rust标准库手册](https://doc.rust-lang.org/std/index.html)  
